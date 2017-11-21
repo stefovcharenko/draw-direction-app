@@ -61,4 +61,23 @@ class FlightVehicle extends \yii\db\ActiveRecord
     {
         return $this->hasMany(Flight::className(), ['vehicle_id' => 'id']);
     }
+
+    /**
+     * Returns list of available vehicles:
+     *  '{id}' => '{name}'
+     *
+     * @return array
+     */
+    public static function getVehiclesList()
+    {
+        $result = [
+            '' => '--- Оберіть БПЛА ---'
+        ];
+        $vehicles = self::find()->all();
+        foreach ($vehicles as $vehicle) {
+            $result[$vehicle->id] = $vehicle->name;
+        }
+
+        return $result;
+    }
 }

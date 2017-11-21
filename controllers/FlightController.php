@@ -106,6 +106,16 @@ class FlightController extends Controller
         return $this->redirect(['index']);
     }
 
+    public function actionGetAvailableFlights()
+    {
+        if (Yii::$app->request->isAjax) {
+            if ($vehicle = Yii::$app->request->post('vehicle')) {
+                echo $this->renderPartial('_flights_dropdown', ['vehicle' => $vehicle]);
+            }
+            Yii::$app->end();
+        }
+    }
+
     /**
      * Finds the Flight model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.

@@ -66,4 +66,19 @@ class Flight extends \yii\db\ActiveRecord
     {
         return $this->hasOne(FlightVehicle::className(), ['id' => 'vehicle_id']);
     }
+
+    public static function getAvailableFlightsForVehicle($vehicleId)
+    {
+        $result = [
+            '' => '--- Оберіть політ ---'
+        ];
+        $flights = self::findAll([
+            'vehicle_id' => $vehicleId
+        ]);
+        foreach ($flights as $flight) {
+            $result[$flight->id] = $flight->begin_time . ' - ' . $flight->end_time;
+        }
+
+        return $result;
+    }
 }
