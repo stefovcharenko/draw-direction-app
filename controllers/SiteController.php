@@ -26,9 +26,6 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-        $params = [
-            'vehicleModel' => new FlightVehicle,
-        ];
-        return $this->render('index', $params);
+        return $this->render('index');
     }
 }

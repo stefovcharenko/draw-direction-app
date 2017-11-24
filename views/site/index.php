@@ -1,20 +1,17 @@
 <?php
 use \app\models\FlightVehicle;
-use yii\bootstrap\ActiveForm;
+use yii\helpers\Html;
 
 /* @var $this yii\web\View */
-/* @var $vehicleModel app\models\FlightVehicle */
 /* @var $form yii\widgets\ActiveForm */
 ?>
 <div class="site-index">
-    <?php $form = ActiveForm::begin([
-        'layout' => 'horizontal'
+    <?= Html::label('Оберіть БПЛА'); ?>
+    <?= Html::dropDownList('vehicle', '', FlightVehicle::getVehiclesList(), [
+        'class' => 'form-control',
+        'id' => 'flightvehicle-id',
     ]); ?>
-    <?= $form->field($vehicleModel, 'id')
-        ->dropDownList(FlightVehicle::getVehiclesList())
-        ->label('Оберіть БПЛА'); ?>
 
     <div class="flights"></div>
     <div class="map"></div>
-    <?php $form::end(); ?>
 </div>

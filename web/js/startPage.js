@@ -1,5 +1,6 @@
 $(document).ready(function () {
     $('#flightvehicle-id').on('change', function () {
+        $('.flights, .map').hide();
         var vehicle = ($('#flightvehicle-id :selected').val());
         if (vehicle) {
             $.ajax({
@@ -9,7 +10,7 @@ $(document).ready(function () {
                     vehicle: vehicle
                 },
                 success: function (response) {
-                    $('.flights').html(response);
+                    $('.flights').html(response).show();
                 }
             });
         }
