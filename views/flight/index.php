@@ -23,7 +23,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
             'begin_time',
             'end_time',
-            'vehicle_id',
+            'vehicle.name',
 
             ['class' => 'yii\grid\ActionColumn'],
         ],

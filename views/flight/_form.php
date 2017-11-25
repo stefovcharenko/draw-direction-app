@@ -5,7 +5,7 @@ use yii\widgets\ActiveForm;
 use kartik\datetime\DateTimePicker;
 
 /* @var $this yii\web\View */
-/* @var $model app\models\Flight */
+/* @var $flightModel app\models\Flight */
 /* @var $form yii\widgets\ActiveForm */
 ?>
 
@@ -13,26 +13,26 @@ use kartik\datetime\DateTimePicker;
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <?= $form->field($model, 'begin_time')->widget(DateTimePicker::classname(), [
+    <?= $form->field($flightModel, 'begin_time')->widget(DateTimePicker::classname(), [
         'options' => ['placeholder' => 'Введіть час початку польоту'],
         'pluginOptions' => [
             'autoclose' => true
         ]
     ]); ?>
 
-    <?= $form->field($model, 'end_time')->widget(DateTimePicker::classname(), [
+    <?= $form->field($flightModel, 'end_time')->widget(DateTimePicker::classname(), [
         'options' => ['placeholder' => 'Введіть час кінця польоту'],
         'pluginOptions' => [
             'autoclose' => true
         ]
     ]) ?>
 
-    <?= $form->field($model, 'vehicle_id')
+    <?= $form->field($flightModel, 'vehicle_id')
         ->dropDownList(FlightVehicle::getVehiclesList())
         ->label('БПЛА'); ?>
 
     <div class="form-group">
-        <?= Html::submitButton($model->isNewRecord ? 'Додати' : 'Редагувати', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+        <?= Html::submitButton($flightModel->isNewRecord ? 'Додати' : 'Редагувати', ['class' => $flightModel->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>

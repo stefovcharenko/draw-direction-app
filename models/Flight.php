@@ -33,9 +33,22 @@ class Flight extends \yii\db\ActiveRecord
         return [
             [['begin_time', 'end_time', 'vehicle_id'], 'required'],
             [['begin_time', 'end_time'], 'safe'],
+            ['begin_time', 'validateDates'],
             [['vehicle_id'], 'integer'],
             [['vehicle_id'], 'exist', 'skipOnError' => true, 'targetClass' => FlightVehicle::className(), 'targetAttribute' => ['vehicle_id' => 'id']],
         ];
+    }
+
+    /**
+     * @param $attribute
+     */
+    public function validateDates($attribute){
+        if(strtotime($this->begin_time) >= strtotime($this->end_time)){
+            $this->addError(
+                $attribute,
+                'Дата та час початку польоту не можуть бути більшими або дорівнювати даті та часу кінця польоту'
+            );
+        }
     }
 
     /**
@@ -67,6 +80,10 @@ class Flight extends \yii\db\ActiveRecord
         return $this->hasOne(FlightVehicle::className(), ['id' => 'vehicle_id']);
     }
 
+    /**
+     * @param $vehicleId
+     * @return array
+     */
     public static function getAvailableFlightsForVehicle($vehicleId)
     {
         $result = [

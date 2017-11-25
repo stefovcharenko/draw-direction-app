@@ -15,21 +15,6 @@ use yii\filters\VerbFilter;
 class FlightController extends Controller
 {
     /**
-     * @inheritdoc
-     */
-    public function behaviors()
-    {
-        return [
-            'verbs' => [
-                'class' => VerbFilter::className(),
-                'actions' => [
-                    'delete' => ['POST'],
-                ],
-            ],
-        ];
-    }
-
-    /**
      * Lists all Flight models.
      * @return mixed
      */
@@ -69,7 +54,7 @@ class FlightController extends Controller
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
             return $this->render('create', [
-                'model' => $model,
+                'flightModel' => $model,
             ]);
         }
     }
@@ -88,7 +73,7 @@ class FlightController extends Controller
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
             return $this->render('update', [
-                'model' => $model,
+                'flightModel' => $model,
             ]);
         }
     }
