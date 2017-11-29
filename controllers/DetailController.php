@@ -8,6 +8,7 @@ use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\bootstrap\ActiveForm;
 
 /**
  * DetailController implements the CRUD actions for FlightDetail model.
@@ -120,5 +121,28 @@ class DetailController extends Controller
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
         }
+    }
+
+    public function actionGetCoordinatesTemplate()
+    {
+        if (Yii::$app->request->isAjax) {
+            if ($counter = Yii::$app->request->post('counter')) {
+                echo $this->renderPartial('_coordinates_set', [
+                    'counter' => (int)$counter,
+                    'coordinateModel' => new FlightDetail,
+                    'form' => $this->form(),
+                ]);
+            }
+            Yii::$app->end();
+        }
+    }
+
+    private function form()
+    {
+        $form = new ActiveForm;
+        $form->id = 'flight-form';
+        $form->layout = 'horizontal';
+
+        return $form;
     }
 }

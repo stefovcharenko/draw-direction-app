@@ -47,10 +47,10 @@ class FlightDetail extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'flight_id' => 'Flight ID',
-            'vehicle_id' => 'Vehicle ID',
-            'latitude' => 'Latitude',
-            'longitude' => 'Longitude',
+            'flight_id' => 'ID польоту',
+            'vehicle_id' => 'ID БПЛА',
+            'latitude' => 'Широта',
+            'longitude' => 'Довгота',
         ];
     }
 

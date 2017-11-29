@@ -2,12 +2,12 @@
 
 namespace app\controllers;
 
+use app\models\FlightDetail;
 use Yii;
 use app\models\Flight;
 use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
-use yii\filters\VerbFilter;
 
 /**
  * FlightController implements the CRUD actions for Flight model.
@@ -49,12 +49,14 @@ class FlightController extends Controller
     public function actionCreate()
     {
         $model = new Flight();
+        $coordinatePairs = [new FlightDetail];
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
             return $this->render('create', [
                 'flightModel' => $model,
+                'coordinatePairs' => $coordinatePairs
             ]);
         }
     }
