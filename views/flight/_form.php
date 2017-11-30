@@ -51,6 +51,9 @@ use kartik\datetime\DateTimePicker;
         <div class="panel-body coordinates-block">
             <?php foreach ($coordinatePairs as $key => $coordinatePair): ?>
                 <div class="row" id="coordinate-row-<?= $key ?>">
+                    <?php if ($coordinatePair->isNewRecord === false): ?>
+                        <?= $form->field($coordinatePair, "[$key]id")->hiddenInput() ?>
+                    <?php endif; ?>
                     <div class="col-xs-5">
                         <?= $form->field($coordinatePair, "[$key]latitude")->textInput(['type' => 'number']); ?>
                     </div>
@@ -62,19 +65,17 @@ use kartik\datetime\DateTimePicker;
                             <?= Html::button('-', [
                                 'class' => 'btn btn-danger delete-coordinate',
                                 'data-row' => "coordinate-row-{$key}",
-                                'data-id' => $key,
+                                'data-number' => $key,
+                                'data-id' => $coordinatePair->id,
                             ])?>
+                        </div>
                     <?php endif;?>
                 </div>
             <?php endforeach; ?>
         </div>
     </div>
-
-
     <div class="form-group">
         <?= Html::submitButton($flightModel->isNewRecord ? 'Додати' : 'Редагувати', ['class' => $flightModel->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
     </div>
-
     <?php ActiveForm::end(); ?>
-
 </div>

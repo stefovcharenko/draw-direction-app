@@ -57,10 +57,21 @@ $(document).ready(function () {
     $('body').on('click', '.delete-coordinate', function () {
         var self = $(this);
         var flightForm = $('#flight-form');
-        var rowNumber = self.data('id');
+        var rowNumber = self.data('number');
         var rowId = self.data('row');
+        var recordId = self.data('id');
 
-        $('#' + rowId).remove();
+        if (recordId) {
+            $.ajax({
+               url: '/details/delete?id=' + recordId,
+               type: 'POST',
+               success: function() {
+                   $('#' + rowId).remove();
+               }
+            });
+        } else {
+            $('#' + rowId).remove();
+        }
 
         flightForm.yiiActiveForm('remove', 'flightdetail-' + rowNumber + '-longitude');
         flightForm.yiiActiveForm('remove', 'flightdetail-' + rowNumber + '-latitude');

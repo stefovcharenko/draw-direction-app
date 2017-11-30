@@ -17,7 +17,8 @@ use yii\helpers\Html;
         <?= Html::button('-', [
             'class' => 'btn btn-danger delete-coordinate',
             'data-row' => "coordinate-row-{$counter}",
-            'data-id' => $counter,
+            'data-number' => $counter,
+            'data-id' => '',
         ])?>
     </div>
 </div>

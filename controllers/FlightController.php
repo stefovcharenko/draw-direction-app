@@ -36,8 +36,17 @@ class FlightController extends Controller
      */
     public function actionView($id)
     {
+        $model = $this->findModel($id);
+        $coordinates = '';
+        $coordinateModels = $model->flightDetails;
+
+        foreach ($coordinateModels as $coordinateModel) {
+            $coordinates .= $coordinateModel->longitude . ', ' . $coordinateModel->latitude . "<br>";
+        }
+
         return $this->render('view', [
-            'model' => $this->findModel($id),
+            'model' => $model,
+            'coordinates' => $coordinates,
         ]);
     }
 
@@ -52,7 +61,21 @@ class FlightController extends Controller
         $coordinatePairs = [new FlightDetail];
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+            $flightId = $model->id;
+            $vehicleId = $model->vehicle_id;
+            if (($flightCoordinatesSets = Yii::$app->request->post('FlightDetail')) !== null) {
+                foreach ($flightCoordinatesSets as $flightCoordinatesSet) {
+                    $flightCoordinatesModel = new FlightDetail();
+                    $flightCoordinatesModel->attributes = $flightCoordinatesSet;
+                    $flightCoordinatesModel->vehicle_id = $vehicleId;
+                    $flightCoordinatesModel->flight_id = $flightId;
+
+                    if ($flightCoordinatesModel->validate()) {
+                        $flightCoordinatesModel->save(false);
+                    }
+                }
+                $this->redirect('index');
+            }
         } else {
             return $this->render('create', [
                 'flightModel' => $model,
@@ -70,12 +93,32 @@ class FlightController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
+        $coordinatePairs = $model->flightDetails;
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+            $flightId = $model->id;
+            $vehicleId = $model->vehicle_id;
+            if (($flightCoordinatesSets = Yii::$app->request->post('FlightDetail')) !== null) {
+                foreach ($flightCoordinatesSets as $flightCoordinatesSet) {
+                    if (isset($flightCoordinatesSet['id'])) {
+                        $flightCoordinatesModel = FlightDetail::findOne($flightCoordinatesSet['id']);
+                    } else {
+                        $flightCoordinatesModel = new FlightDetail();
+                        $flightCoordinatesModel->flight_id = $flightId;
+                    }
+                    $flightCoordinatesModel->attributes = $flightCoordinatesSet;
+                    $flightCoordinatesModel->vehicle_id = $vehicleId;
+
+                    if ($flightCoordinatesModel->validate()) {
+                        $flightCoordinatesModel->save(false);
+                    }
+                }
+                $this->redirect('index');
+            }
         } else {
             return $this->render('update', [
                 'flightModel' => $model,
+                'coordinatePairs' => $coordinatePairs
             ]);
         }
     }

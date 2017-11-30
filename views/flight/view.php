@@ -24,10 +24,14 @@ $this->params['breadcrumbs'][] = 'Перегляд польоту';
     <?= DetailView::widget([
         'model' => $model,
         'attributes' => [
-            'id',
             'begin_time',
             'end_time',
-            'vehicle_id',
+            'vehicle.name',
+            [
+                'label' => 'Координати',
+                'value' => $coordinates,
+                'format' => 'raw',
+            ],
         ],
     ]) ?>
 

@@ -4,6 +4,8 @@ use yii\helpers\Html;
 
 /* @var $this yii\web\View */
 /* @var $flightModel app\models\Flight */
+/* @var $coordinatePairs app\models\FlightDetail[] */
+
 
 $this->title = 'Редагування польоту';
 $this->params['breadcrumbs'][] = ['label' => 'Польоти', 'url' => ['index']];
@@ -15,6 +17,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <?= $this->render('_form', [
         'flightModel' => $flightModel,
+        'coordinatePairs' => $coordinatePairs
     ]) ?>
 
 </div>
