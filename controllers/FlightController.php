@@ -2,6 +2,7 @@
 
 namespace app\controllers;
 
+use app\helpers\FlightHelper;
 use app\models\FlightDetail;
 use Yii;
 use app\models\Flight;
@@ -39,9 +40,11 @@ class FlightController extends Controller
         $model = $this->findModel($id);
         $coordinates = '';
         $coordinateModels = $model->flightDetails;
+        $coordinateTypeNames = FlightHelper::getCoordinateTypesList();
 
         foreach ($coordinateModels as $coordinateModel) {
-            $coordinates .= $coordinateModel->longitude . ', ' . $coordinateModel->latitude . "<br>";
+            $coordinates .= $coordinateModel->latitude . ', ' . $coordinateModel->longitude .
+                ' -> ' . $coordinateTypeNames[$coordinateModel->type] . "<br>";
         }
 
         return $this->render('view', [
@@ -135,17 +138,6 @@ class FlightController extends Controller
 
         return $this->redirect(['index']);
     }
-
-    public function actionGetAvailableFlights()
-    {
-        if (Yii::$app->request->isAjax) {
-            if ($vehicle = Yii::$app->request->post('vehicle')) {
-                echo $this->renderPartial('_flights_dropdown', ['vehicle' => $vehicle]);
-            }
-            Yii::$app->end();
-        }
-    }
-
     /**
      * Finds the Flight model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
@@ -161,4 +153,59 @@ class FlightController extends Controller
             throw new NotFoundHttpException('The requested page does not exist.');
         }
     }
+
+
+    /**
+     * Returns dropdown with available flights.
+     *
+     * @throws \yii\base\ExitException
+     */
+    public function actionGetAvailableFlights()
+    {
+        if (Yii::$app->request->isAjax) {
+            if ($vehicle = Yii::$app->request->post('vehicle')) {
+                echo $this->renderPartial('_flights_dropdown', ['vehicle' => $vehicle]);
+            }
+            Yii::$app->end();
+        }
+    }
+
+    public function actionGetFlightMap()
+    {
+        if (Yii::$app->request->isAjax) {
+            if ($flight = Yii::$app->request->post('flight')) {
+                $coordinates = [
+                    'preferable' => [],
+                    'real' => [],
+                ];
+
+                $flightCoordinatesModels = FlightDetail::find()
+                    ->where([
+                        'flight_id' => (int)$flight
+                    ])
+                    ->all();
+
+                if (!empty($flightCoordinatesModels)) {
+                    foreach ($flightCoordinatesModels as $flightCoordinatesModel) {
+                        $coordinatePair = [
+                            'lat' => $flightCoordinatesModel->latitude,
+                            'lng' => $flightCoordinatesModel->longitude,
+                        ];
+                        switch ($flightCoordinatesModel->type) {
+                            case FlightDetail::TYPE_PREFERRED:
+                                $coordinates['preferable'][] = $coordinatePair;
+                                break;
+                            case FlightDetail::TYPE_REAL:
+                                $coordinates['real'][] = $coordinatePair;
+                                break;
+                        }
+                    }
+                }
+                echo $this->renderPartial('_flight_map', $coordinates);
+            }
+            Yii::$app->end();
+        }
+    }
+
+
 }

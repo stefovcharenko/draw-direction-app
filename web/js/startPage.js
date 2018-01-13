@@ -16,6 +16,23 @@ $(document).ready(function () {
         }
     });
 
+    $(document).on('change', '#flight-id', function () {
+        $('.map').hide();
+        var flight = ($('#flight-id :selected').val());
+        if (flight) {
+            $.ajax({
+                url: '/flights/get-flight-map',
+                type: "POST",
+                data: {
+                    flight: flight
+                },
+                success: function (response) {
+                    $('.map').html(response).show();
+                }
+            });
+        }
+    });
+
     $('#add-coordinate').on('click', function () {
         var self = $(this);
         var flightForm = $('#flight-form');

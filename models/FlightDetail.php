@@ -10,14 +10,19 @@ use Yii;
  * @property integer $id
  * @property integer $flight_id
  * @property integer $vehicle_id
- * @property double $latitude
- * @property double $longitude
+ * @property string $latitude
+ * @property string $longitude
+ * @property string $type
+ *
  *
  * @property Flight $flight
  * @property FlightVehicle $vehicle
  */
 class FlightDetail extends \yii\db\ActiveRecord
 {
+    const TYPE_PREFERRED = '1';
+    const TYPE_REAL = '2';
+
     /**
      * @inheritdoc
      */
@@ -32,9 +37,10 @@ class FlightDetail extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['flight_id', 'vehicle_id', 'latitude', 'longitude'], 'required'],
+            [['flight_id', 'vehicle_id', 'latitude', 'longitude', 'type'], 'required'],
             [['flight_id', 'vehicle_id'], 'integer'],
-            [['latitude', 'longitude'], 'number'],
+            [['type'], 'in', 'range' => [self::TYPE_PREFERRED, self::TYPE_REAL]],
+            [['latitude', 'longitude'], 'match', 'pattern' => '/^(-)?\d{1,3}\.\d{4}$/'],
             [['flight_id'], 'exist', 'skipOnError' => true, 'targetClass' => Flight::className(), 'targetAttribute' => ['flight_id' => 'id']],
             [['vehicle_id'], 'exist', 'skipOnError' => true, 'targetClass' => FlightVehicle::className(), 'targetAttribute' => ['vehicle_id' => 'id']],
         ];
@@ -51,6 +57,7 @@ class FlightDetail extends \yii\db\ActiveRecord
             'vehicle_id' => 'ID БПЛА',
             'latitude' => 'Широта',
             'longitude' => 'Довгота',
+            'type' => 'Тип',
         ];
     }
 

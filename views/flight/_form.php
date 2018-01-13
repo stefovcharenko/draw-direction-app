@@ -1,5 +1,6 @@
 <?php
 use \app\models\FlightVehicle;
+use \app\helpers\FlightHelper;
 use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
 use kartik\datetime\DateTimePicker;
@@ -38,8 +39,8 @@ use kartik\datetime\DateTimePicker;
     <div class="panel panel-default">
         <div class="panel-heading">
             <div class="row" style="display: flex; align-items: center">
-                <div class="col-xs-10"><b>Координати</b></div>
-                <div class="col-xs-2">
+                <div class="col-xs-9"><b>Координати</b></div>
+                <div class="col-xs-3">
                     <?= Html::button('+', [
                         'class' => 'btn btn-success',
                         'id' => 'add-coordinate',
@@ -52,16 +53,19 @@ use kartik\datetime\DateTimePicker;
             <?php foreach ($coordinatePairs as $key => $coordinatePair): ?>
                 <div class="row" id="coordinate-row-<?= $key ?>">
                     <?php if ($coordinatePair->isNewRecord === false): ?>
-                        <?= $form->field($coordinatePair, "[$key]id")->hiddenInput() ?>
+                        <?= $form->field($coordinatePair, "[$key]id")->hiddenInput()->label(false); ?>
                     <?php endif; ?>
-                    <div class="col-xs-5">
-                        <?= $form->field($coordinatePair, "[$key]latitude")->textInput(['type' => 'number']); ?>
+                    <div class="col-xs-3">
+                        <?= $form->field($coordinatePair, "[$key]latitude")->textInput(); ?>
                     </div>
-                    <div class="col-xs-5">
-                        <?= $form->field($coordinatePair, "[$key]longitude")->textInput(['type' => 'number']); ?>
+                    <div class="col-xs-3">
+                        <?= $form->field($coordinatePair, "[$key]longitude")->textInput(); ?>
+                    </div>
+                    <div class="col-xs-3">
+                        <?= $form->field($coordinatePair, "[$key]type")->dropDownList(FlightHelper::getCoordinateTypesList()); ?>
                     </div>
                     <?php if ($key): ?>
-                        <div class="col-xs-2">
+                        <div class="col-xs-3">
                             <?= Html::button('-', [
                                 'class' => 'btn btn-danger delete-coordinate',
                                 'data-row' => "coordinate-row-{$key}",

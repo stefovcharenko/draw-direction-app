@@ -13,5 +13,5 @@ use yii\helpers\Html;
     ]); ?>
 
     <div class="flights"></div>
-    <div class="map"></div>
+    <div class="map" style="height: 500px"></div>
 </div>
