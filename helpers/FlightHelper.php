@@ -19,8 +19,9 @@ class FlightHelper
     public static function getCoordinateTypesList()
     {
         return [
-            FlightDetail::TYPE_PREFERRED => 'Бажана',
-            FlightDetail::TYPE_REAL => 'Реальна',
+            FlightDetail::TYPE_PREFERRED => 'Реальна',
+            FlightDetail::TYPE_REAL => 'Виміряна',
+            FlightDetail::TYPE_APPROXIMATED => 'Апроксимована',
         ];
     }
 }

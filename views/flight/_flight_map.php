@@ -1,6 +1,7 @@
 <?php
 /* @var array $preferable */
 /* @var array $real */
+/* @var array $approximated */
 ?>
 <div id="map" style="height: 100%"></div>
 <script>
@@ -33,6 +34,18 @@
         });
 
         flightRealPath.setMap(map);
+    <?php endif?>
+    <?php if (!empty($approximated)):?>
+        var flightApproximatedPlanCoordinates = <?= str_replace('"', '', json_encode($approximated))?>;
+        var flightApproximatedPath = new google.maps.Polyline({
+            path: flightApproximatedPlanCoordinates,
+            geodesic: true,
+            strokeColor: '#13ff1a',
+            strokeOpacity: 1.0,
+            strokeWeight: 2
+        });
+
+        flightApproximatedPath.setMap(map);
     <?php endif?>
     }
 </script>

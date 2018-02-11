@@ -22,6 +22,7 @@ class FlightDetail extends \yii\db\ActiveRecord
 {
     const TYPE_PREFERRED = '1';
     const TYPE_REAL = '2';
+    const TYPE_APPROXIMATED = '3';
 
     /**
      * @inheritdoc
@@ -39,7 +40,7 @@ class FlightDetail extends \yii\db\ActiveRecord
         return [
             [['flight_id', 'vehicle_id', 'latitude', 'longitude', 'type'], 'required'],
             [['flight_id', 'vehicle_id'], 'integer'],
-            [['type'], 'in', 'range' => [self::TYPE_PREFERRED, self::TYPE_REAL]],
+            [['type'], 'in', 'range' => [self::TYPE_PREFERRED, self::TYPE_REAL, self::TYPE_APPROXIMATED]],
             [['latitude', 'longitude'], 'match', 'pattern' => '/^(-)?\d{1,3}\.\d{4}$/'],
             [['flight_id'], 'exist', 'skipOnError' => true, 'targetClass' => Flight::className(), 'targetAttribute' => ['flight_id' => 'id']],
             [['vehicle_id'], 'exist', 'skipOnError' => true, 'targetClass' => FlightVehicle::className(), 'targetAttribute' => ['vehicle_id' => 'id']],

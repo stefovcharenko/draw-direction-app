@@ -177,6 +177,7 @@ class FlightController extends Controller
                 $coordinates = [
                     'preferable' => [],
                     'real' => [],
+                    'approximated' => [],
                 ];
 
                 $flightCoordinatesModels = FlightDetail::find()
@@ -197,6 +198,9 @@ class FlightController extends Controller
                                 break;
                             case FlightDetail::TYPE_REAL:
                                 $coordinates['real'][] = $coordinatePair;
+                                break;
+                            case FlightDetail::TYPE_APPROXIMATED:
+                                $coordinates['approximated'][] = $coordinatePair;
                                 break;
                         }
                     }
